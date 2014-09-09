@@ -1,0 +1,453 @@
+package com.byteme.calculatorapp;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JTextField;
+
+import java.awt.Font;
+
+import javax.swing.JButton;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
+import java.awt.Color;
+
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+
+@SuppressWarnings("serial")
+public class CalculatorGui extends JFrame {
+	double input = 0.0;
+	double output = 0.0;
+	char math_operator;
+	private JPanel contentPane;
+	private JTextField textField;
+	CalculatorFunctions cf = new CalculatorFunctions();
+	private JTextField textField_1;
+
+	/**
+	 * Launch the application.
+	 */
+	public void Gui() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					CalculatorGui frame = new CalculatorGui();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public CalculatorGui() {
+		setTitle("Kid Calculator - Colour");
+		setBackground(new Color(255, 99, 71));
+		setForeground(Color.WHITE);
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\DLouth07\\Downloads\\index.jpg"));
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 415, 450);
+		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 228, 196));
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(null);
+		setContentPane(contentPane);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 11, 386, 80);
+		contentPane.add(scrollPane);
+		
+		textField = new JTextField();
+		textField.setBorder(null);
+		textField.setEditable(false);
+		textField.setHorizontalAlignment(SwingConstants.RIGHT);
+		scrollPane.setViewportView(textField);
+		textField.setBackground(new Color(255, 255, 255));
+		textField.setText("0");
+		textField.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
+		textField.setColumns(10);
+		
+		textField_1 = new JTextField();
+		textField_1.setBorder(null);
+		textField_1.setBackground(new Color(255, 255, 255));
+		textField_1.setEditable(false);
+		textField_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
+		textField_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		scrollPane.setColumnHeaderView(textField_1);
+		textField_1.setColumns(10);
+		
+		final JButton additionButton = new JButton("+");
+		additionButton.setBackground(Color.PINK);
+		additionButton.setToolTipText("Click this button if you want to add numbers together");
+		additionButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String button_text = additionButton.getText();
+				getOperator(button_text);
+			}
+		});
+		additionButton.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		additionButton.setBounds(307, 119, 89, 50);
+		contentPane.add(additionButton);
+		
+		final JButton multiplicationButton = new JButton("\u00D7");
+		multiplicationButton.setBackground(Color.PINK);
+		multiplicationButton.setToolTipText("Click this button if you want to times numbers together");
+		multiplicationButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String button_text = multiplicationButton.getText();
+				getOperator(button_text);
+			}
+		});
+		
+		final JButton subtractionButton = new JButton("\u2212");
+		subtractionButton.setBackground(Color.PINK);
+		subtractionButton.setToolTipText("Click this button if you want to take away");
+		subtractionButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String button_text = subtractionButton.getText();
+				getOperator(button_text);
+				
+			}
+		});
+		subtractionButton.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		subtractionButton.setBounds(307, 178, 89, 50);
+		contentPane.add(subtractionButton);
+		multiplicationButton.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		multiplicationButton.setBounds(307, 239, 89, 50);
+		contentPane.add(multiplicationButton);
+		
+		final JButton divisionButton = new JButton("\u00F7");
+		divisionButton.setBackground(Color.PINK);
+		divisionButton.setToolTipText("Click this button if you want to divide numbers ");
+		divisionButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String button_text = divisionButton.getText();
+				getOperator(button_text);
+			}
+		});
+		divisionButton.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		divisionButton.setBounds(307, 300, 89, 50);
+		contentPane.add(divisionButton);
+		
+		JButton decimalPointButton = new JButton(".");
+		decimalPointButton.setBackground(new Color(176, 224, 230));
+		decimalPointButton.setToolTipText("Decimal point");
+		decimalPointButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textField.getText().contains(".")){
+				}
+				else{
+				String decimalPointButton = textField.getText()+".";
+				textField.setText(decimalPointButton);
+				}
+			}
+		});
+		decimalPointButton.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		decimalPointButton.setBounds(208, 361, 89, 50);
+		contentPane.add(decimalPointButton);
+		
+		JButton equalsButton = new JButton("=");
+		equalsButton.setForeground(Color.BLACK);
+		equalsButton.setBackground(new Color(102, 205, 170));
+		equalsButton.setToolTipText("Click this button for the answer");
+		equalsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				switch(cf.math_operator){
+				case '+':
+					cf.output = (cf.input) + (Double.parseDouble(textField.getText()));
+					break;
+				case '\u2212':
+					cf.output = (cf.input) - (Double.parseDouble(textField.getText()));
+					break;
+				case '\u00F7':
+					cf.output = (cf.input) / (Double.parseDouble(textField.getText()));
+					break;
+				case '\u00D7':
+					cf.output = (cf.input) * (Double.parseDouble(textField.getText()));
+					break;
+				default:
+					cf.output = Double.parseDouble(textField.getText());
+					break;
+				}
+				
+				/* Remove unnecessary .0 from calculations & limit answers to 2 decimal places*/
+				
+				if(cf.output%1 == 0){
+					int outputInt=(int)cf.output;
+					if(!(textField_1.getText().contains("="))){
+						textField_1.setText(textField_1.getText() + textField.getText() + " = " + ((Integer)outputInt).toString());
+					}
+					textField.setText(((Integer)outputInt).toString());	
+				}
+				else{
+					if(!(textField_1.getText().contains("="))){
+						textField_1.setText(textField_1.getText() + textField.getText() + " = " + String.format("%.2f", cf.output));
+					}	
+					textField.setText(String.format("%.2f", cf.output));
+				}
+					System.out.println(textField.getText());
+				cf.input=0;
+
+				}
+		});
+		equalsButton.setFont(new Font("Tahoma", Font.BOLD, 30));
+		equalsButton.setBounds(10, 119, 188, 50);
+		contentPane.add(equalsButton);
+		
+		JButton numberZero = new JButton("0");
+		numberZero.setBackground(new Color(176, 224, 230));
+		numberZero.setToolTipText("Number Zero");
+		numberZero.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textField.getText().equals("0") || textField_1.getText().contains("=")){
+					textField.setText("0");
+					textField_1.setText("");
+				}
+				else{
+				String numberZero = textField.getText()+"0";
+				textField.setText(numberZero);
+				}
+			}
+		});
+		numberZero.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		numberZero.setBounds(10, 361, 188, 50);
+		contentPane.add(numberZero);
+				
+		JButton numberOne = new JButton("1");
+		numberOne.setBackground(new Color(176, 224, 230));
+		numberOne.setToolTipText("Number One");
+		numberOne.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textField.getText().equals("0") || textField_1.getText().contains("=")){
+					textField.setText("1");
+					textField_1.setText("");
+				}
+				else{
+				String numberOne = textField.getText()+"1";
+				textField.setText(numberOne);
+				}
+			}
+		});
+		numberOne.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		numberOne.setBounds(10, 300, 89, 50);
+		contentPane.add(numberOne);
+		
+		JButton numberTwo = new JButton("2");
+		numberTwo.setBackground(new Color(176, 224, 230));
+		numberTwo.setToolTipText("Number Two");
+		numberTwo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textField.getText().equals("0")){
+					textField.setText("2");
+					textField_1.setText("");
+				}
+				else{
+				String numberTwo = textField.getText()+"2";
+				textField.setText(numberTwo);
+				}
+			}
+		});
+		numberTwo.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		numberTwo.setBounds(109, 300, 89, 50);
+		contentPane.add(numberTwo);
+		
+		JButton numberThree = new JButton("3");
+		numberThree.setBackground(new Color(176, 224, 230));
+		numberThree.setToolTipText("Number Three");
+		numberThree.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textField.getText().equals("0") || textField_1.getText().contains("=")){
+					textField.setText("3");
+					textField_1.setText("");
+				}
+				else{
+				String numberThree = textField.getText()+"3";
+				textField.setText(numberThree);
+				}
+			}
+		});
+		numberThree.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		numberThree.setBounds(208, 300, 89, 50);
+		contentPane.add(numberThree);
+		
+		JButton numberFour = new JButton("4");
+		numberFour.setBackground(new Color(176, 224, 230));
+		numberFour.setToolTipText("Number Four");
+		numberFour.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textField.getText().equals("0") || textField_1.getText().contains("=")){
+					textField.setText("4");
+					textField_1.setText("");
+				}
+				else{
+				String numberFour = textField.getText()+"4";
+				textField.setText(numberFour);
+				}
+			}
+		});
+		numberFour.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		numberFour.setBounds(10, 239, 89, 50);
+		contentPane.add(numberFour);
+		
+		JButton numberFive = new JButton("5");
+		numberFive.setBackground(new Color(176, 224, 230));
+		numberFive.setToolTipText("Number Five");
+		numberFive.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textField.getText().equals("0") || textField_1.getText().contains("=")){
+					textField.setText("5");
+					textField_1.setText("");
+				}
+				else{
+				String numberFive = textField.getText()+"5";
+				textField.setText(numberFive);
+				}
+			}
+		});
+		numberFive.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		numberFive.setBounds(109, 239, 89, 50);
+		contentPane.add(numberFive);
+		
+		JButton numberSix = new JButton("6");
+		numberSix.setBackground(new Color(176, 224, 230));
+		numberSix.setToolTipText("Number Six");
+		numberSix.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textField.getText().equals("0") || textField_1.getText().contains("=")){
+					textField.setText("6");
+					textField_1.setText("");
+				}
+				else{
+				String numberSix = textField.getText()+"6";
+				textField.setText(numberSix);
+				}
+			}
+		});
+		numberSix.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		numberSix.setBounds(208, 239, 89, 50);
+		contentPane.add(numberSix);
+				
+		JButton numberSeven = new JButton("7");
+		numberSeven.setBackground(new Color(176, 224, 230));
+		numberSeven.setToolTipText("Number Seven");
+		numberSeven.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textField.getText().equals("0") || textField_1.getText().contains("=")){
+					textField.setText("7");
+					textField_1.setText("");
+				}
+				else{
+				String numberSeven = textField.getText()+"7";
+				textField.setText(numberSeven);
+				}
+			}
+		});
+		numberSeven.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		numberSeven.setBounds(10, 178, 89, 50);
+		contentPane.add(numberSeven);
+		
+		JButton numberEight = new JButton("8");
+		numberEight.setBackground(new Color(176, 224, 230));
+		numberEight.setToolTipText("Number Eight");
+		numberEight.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textField.getText().equals("0") || textField_1.getText().contains("=")){
+					textField.setText("8");
+					textField_1.setText("");
+				}
+				else{
+				String numberEight = textField.getText()+"8";
+				textField.setText(numberEight);
+				}
+			}
+		});
+		numberEight.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		numberEight.setBounds(109, 178, 89, 50);
+		contentPane.add(numberEight);
+						
+		JButton numberNine = new JButton("9");
+		numberNine.setBackground(new Color(176, 224, 230));
+		numberNine.setToolTipText("Number Nine");
+		numberNine.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textField.getText().equals("0") || textField_1.getText().contains("=")){
+					textField.setText("9");
+					textField_1.setText("");
+				}
+				else{
+				String numberNine = textField.getText()+"9";
+				textField.setText(numberNine);
+				}
+			}
+		});
+		numberNine.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		numberNine.setBounds(208, 178, 89, 50);
+		contentPane.add(numberNine);
+				
+		JButton clearButton = new JButton("C");
+		clearButton.setBackground(new Color(255, 99, 71));
+		clearButton.setToolTipText("Click this button to clear the number screen");
+		clearButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cf.input = 0.0;
+				cf.output = 0.0;
+				textField.setText("0");
+				textField_1.setText("");
+			}
+		});
+		clearButton.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		clearButton.setBounds(307, 361, 89, 50);
+		contentPane.add(clearButton);
+		
+		JButton plusMinusButton = new JButton("+/\u2212");
+		plusMinusButton.setBackground(Color.PINK);
+		plusMinusButton.setToolTipText("Click this button if you want to use a minus number\r\n(left of zero on the number line)");
+		plusMinusButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try{
+				if(textField.getText().startsWith("-")){	
+					textField.setText(textField.getText().substring(1));
+				}
+				else{
+					if(textField.getText().equals("0") || textField.getText().equals("")){
+						textField.setText("-");
+					}
+					else if(!(textField.getText().equals("0"))||!(textField.getText().equals(""))){
+						textField.setText("-"+textField.getText());
+					}
+					else{;}
+				}
+				}catch (NumberFormatException nfe){
+					textField.setText("No Bueno!");
+				}
+			}
+		});
+		plusMinusButton.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		plusMinusButton.setBounds(208, 119, 89, 50);
+		contentPane.add(plusMinusButton);
+	}
+	public void getOperator(String btnText){
+		try{
+		if(!(textField_1.getText().endsWith(" " + math_operator + " "))){
+		cf.math_operator = btnText.charAt(0);
+		cf.input = cf.input + Double.parseDouble(textField.getText());
+		textField_1.setText(textField_1.getText() + " " + textField.getText() + " " + cf.math_operator + " ");
+		textField.setText("");
+		}
+		else{;}	
+		}catch (NumberFormatException nfe){
+			textField.setText("No Bueno!");
+		}
+		
+		}
+}
