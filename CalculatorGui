@@ -90,6 +90,7 @@ public class CalculatorGui extends JFrame {
 		additionButton.setToolTipText("Click this button if you want to add numbers together");
 		additionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(textField_1.getText().contains("" + math_operator)) doEquals();
 				String button_text = additionButton.getText();
 				getOperator(button_text);
 			}
@@ -103,17 +104,21 @@ public class CalculatorGui extends JFrame {
 		multiplicationButton.setToolTipText("Click this button if you want to times numbers together");
 		multiplicationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(textField_1.getText().contains("" + math_operator)) doEquals();
 				String button_text = multiplicationButton.getText();
 				getOperator(button_text);
 			}
 		});
+		multiplicationButton.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		multiplicationButton.setBounds(307, 239, 89, 50);
+		contentPane.add(multiplicationButton);
 		
 		final JButton subtractionButton = new JButton("\u2212");
 		subtractionButton.setBackground(Color.PINK);
 		subtractionButton.setToolTipText("Click this button if you want to take away");
 		subtractionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				if(textField_1.getText().contains("" + math_operator)) doEquals();
 				String button_text = subtractionButton.getText();
 				getOperator(button_text);
 				
@@ -122,15 +127,13 @@ public class CalculatorGui extends JFrame {
 		subtractionButton.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		subtractionButton.setBounds(307, 178, 89, 50);
 		contentPane.add(subtractionButton);
-		multiplicationButton.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		multiplicationButton.setBounds(307, 239, 89, 50);
-		contentPane.add(multiplicationButton);
 		
 		final JButton divisionButton = new JButton("\u00F7");
 		divisionButton.setBackground(Color.PINK);
 		divisionButton.setToolTipText("Click this button if you want to divide numbers ");
 		divisionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(textField_1.getText().contains("" + math_operator)) doEquals();
 				String button_text = divisionButton.getText();
 				getOperator(button_text);
 			}
@@ -162,42 +165,7 @@ public class CalculatorGui extends JFrame {
 		equalsButton.setToolTipText("Click this button for the answer");
 		equalsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				switch(cf.math_operator){
-				case '+':
-					cf.output = (cf.input) + (Double.parseDouble(textField.getText()));
-					break;
-				case '\u2212':
-					cf.output = (cf.input) - (Double.parseDouble(textField.getText()));
-					break;
-				case '\u00F7':
-					cf.output = (cf.input) / (Double.parseDouble(textField.getText()));
-					break;
-				case '\u00D7':
-					cf.output = (cf.input) * (Double.parseDouble(textField.getText()));
-					break;
-				default:
-					cf.output = Double.parseDouble(textField.getText());
-					break;
-				}
-				
-				/* Remove unnecessary .0 from calculations & limit answers to 2 decimal places*/
-				
-				if(cf.output%1 == 0){
-					int outputInt=(int)cf.output;
-					if(!(textField_1.getText().contains("="))){
-						textField_1.setText(textField_1.getText() + textField.getText() + " = " + ((Integer)outputInt).toString());
-					}
-					textField.setText(((Integer)outputInt).toString());	
-				}
-				else{
-					if(!(textField_1.getText().contains("="))){
-						textField_1.setText(textField_1.getText() + textField.getText() + " = " + String.format("%.2f", cf.output));
-					}	
-					textField.setText(String.format("%.2f", cf.output));
-				}
-					System.out.println(textField.getText());
-				cf.input=0;
-
+				doEquals();
 				}
 		});
 		equalsButton.setFont(new Font("Tahoma", Font.BOLD, 30));
@@ -380,7 +348,7 @@ public class CalculatorGui extends JFrame {
 		numberNine.setToolTipText("Number Nine");
 		numberNine.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(textField.getText().equals("0") || textField_1.getText().contains("=")){
+				if(textField.getText().equals("0") || textField_1.getText().contains("=") || textField.getText().equals("No Bueno!")){
 					textField.setText("9");
 					textField_1.setText("");
 				}
@@ -446,8 +414,44 @@ public class CalculatorGui extends JFrame {
 		}
 		else{;}	
 		}catch (NumberFormatException nfe){
-			textField.setText("No Bueno!");
 		}
 		
 		}
+	public void doEquals(){
+		switch(cf.math_operator){
+		case '+':
+			cf.output = (cf.input) + (Double.parseDouble(textField.getText()));
+			break;
+		case '\u2212':
+			cf.output = (cf.input) - (Double.parseDouble(textField.getText()));
+			break;
+		case '\u00F7':
+			cf.output = (cf.input) / (Double.parseDouble(textField.getText()));
+			break;
+		case '\u00D7':
+			cf.output = (cf.input) * (Double.parseDouble(textField.getText()));
+			break;
+		default:
+			cf.output = Double.parseDouble(textField.getText());
+			break;
+		}
+		
+		/* Remove unnecessary .0 from calculations & limit answers to 2 decimal places*/
+		
+		if(cf.output%1 == 0){
+			int outputInt=(int)cf.output;
+			if(!(textField_1.getText().contains("="))){
+				textField_1.setText(textField_1.getText() + textField.getText() + " = " + ((Integer)outputInt).toString());
+			}
+			textField.setText(((Integer)outputInt).toString());	
+		}
+		else{
+			if(!(textField_1.getText().contains("="))){
+				textField_1.setText(textField_1.getText() + textField.getText() + " = " + String.format("%.2f", cf.output));
+			}	
+			textField.setText(String.format("%.2f", cf.output));
+		}
+			System.out.println(textField.getText());
+		cf.input=0;
+	}
 }
