@@ -90,7 +90,6 @@ public class CalculatorGui extends JFrame {
 		additionButton.setToolTipText("Click this button if you want to add numbers together");
 		additionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(textField_1.getText().contains("" + math_operator)) doEquals();
 				String button_text = additionButton.getText();
 				getOperator(button_text);
 			}
@@ -104,7 +103,6 @@ public class CalculatorGui extends JFrame {
 		multiplicationButton.setToolTipText("Click this button if you want to times numbers together");
 		multiplicationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(textField_1.getText().contains("" + math_operator)) doEquals();
 				String button_text = multiplicationButton.getText();
 				getOperator(button_text);
 			}
@@ -118,7 +116,6 @@ public class CalculatorGui extends JFrame {
 		subtractionButton.setToolTipText("Click this button if you want to take away");
 		subtractionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(textField_1.getText().contains("" + math_operator)) doEquals();
 				String button_text = subtractionButton.getText();
 				getOperator(button_text);
 				
@@ -133,7 +130,6 @@ public class CalculatorGui extends JFrame {
 		divisionButton.setToolTipText("Click this button if you want to divide numbers ");
 		divisionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(textField_1.getText().contains("" + math_operator)) doEquals();
 				String button_text = divisionButton.getText();
 				getOperator(button_text);
 			}
@@ -348,7 +344,7 @@ public class CalculatorGui extends JFrame {
 		numberNine.setToolTipText("Number Nine");
 		numberNine.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(textField.getText().equals("0") || textField_1.getText().contains("=") || textField.getText().equals("No Bueno!")){
+				if(textField.getText().equals("0") || textField_1.getText().contains("=")){
 					textField.setText("9");
 					textField_1.setText("");
 				}
